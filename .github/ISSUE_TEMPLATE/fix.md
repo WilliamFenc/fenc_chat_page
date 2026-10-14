@@ -1,17 +1,10 @@
 ---
 name: fix
 about: Create a report to help us improve
-title: ''
+title: 'fix: '
 labels: ''
 assignees: ''
 
----
-
----
-name: Bug
-about: Something is broken
-title: "fix: "
-labels: bug
 ---
 
 ## Description
