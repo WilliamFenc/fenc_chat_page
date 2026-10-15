@@ -20,23 +20,23 @@ export function Sidebar({
   onNewSession
 }: SidebarProps) {
   return (
-    <aside className="w-64 bg-gray-950 p-3">
+    <aside className="w-64 bg-panel p-3">
       {projects.map((p) => (
         <div
           key={p.id}
           onClick={() => onSelectProject(p.id)}
           className={`cursor-pointer px-2 py-1 rounded ${
-            p.id === currentProjectId ? 'bg-gray-800' : ''
+            p.id === currentProjectId ? 'bg-accent-soft' : ''
           }`}
         >
           {p.name}
         </div>
       ))}
-      <hr className="my-3 border-gray-800" />
+      <hr className="my-3 border-line" />
       <button
        onClick={onNewSession}
        disabled={currentProjectId === null}
-       className="w-full mb-2 px-2 py-1 rounded bg-gray-800 text-sm disabled:opacity-40"
+       className="w-full mb-2 px-2 py-1 rounded bg-accent-soft text-sm disabled:opacity-40"
       >
         + 
       </button>
@@ -45,8 +45,8 @@ export function Sidebar({
         <div
           key={s.id}
           onClick={() => onSelectSession(s.id)}
-          className={`cursor-pointer px-2 py-1 rounded text-sm text-gray-300 ${
-            s.id === currentSessionId ? 'bg-gray-800' : ''
+          className={`cursor-pointer px-2 py-1 rounded text-sm text-ink-muted ${
+            s.id === currentSessionId ? 'bg-accent-soft' : ''
           }`}
         >
           {s.title}

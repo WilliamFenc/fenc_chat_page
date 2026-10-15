@@ -1,12 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-page: #faf9f5;       /* main background, warm off-white */
-  --color-panel: #f0eee6;      /* sidebar, slightly deeper cream */
-  --color-surface: #ffffff;    /* input boxes, assistant bubbles */
-  --color-line: #e3e0d6;       /* borders */
-  --color-ink: #2c2c2a;        /* primary text, warm near-black */
-  --color-ink-muted: #76756f;  /* secondary text, hints */
-  --color-accent: #d97757;     /* highlights, send button */
-  --color-accent-soft: #f6e4dc; /* selected row, user bubble */
+  --color-page:        #faf9f5; /* warm ivory main background */
+  --color-panel:       #f0eee6; /* sidebar */
+  --color-surface:     #ffffff; /* cards, assistant bubbles */
+  --color-line:        #e8e6dc; /* borders */
+  --color-ink:         #141413; /* near-black primary text */
+  --color-ink-muted:   #6b6a65; /* secondary text, hints */
+  --color-accent:      #2a7de1; /* blue — send button, primary action */
+  --color-accent-soft: #e3f0fc; /* light blue — input, select, +, selected row */
+  --color-info:        #c96442; /* darker terracotta — hover / focus */
+  --color-input:       #e3f0fc; /* light blue — message input */
+  --color-send:        #2a7de1; /* blue — send button */
+  --color-send-hover:  #1f63b8; /* darker blue — send button hover */
 }

@@ -59,7 +59,7 @@ function App() {
 
 
   return (
-    <div className="h-screen flex bg-gray-900 text-white">
+    <div className="h-screen flex bg-page text-ink">
 	<Sidebar 
 	 projects={projects}
 	 sessions={sessions}
