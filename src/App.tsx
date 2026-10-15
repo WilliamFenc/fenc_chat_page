@@ -5,6 +5,7 @@ import { fetchMessages } from './api/messages'
 import { useProjects } from './hooks/useProjects'
 import { useModels } from './hooks/useModels'
 import { useSessions } from './hooks/useSessions'
+import { useMessages } from './hooks/useMessages'
 import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 import { Mainchat } from './components/Mainchat'
@@ -20,33 +21,13 @@ function App() {
   const { projects } = useProjects()
   const { models } = useModels()
   const { sessions, create: createSession } = useSessions(currentProjectId)
-
-  const [messagesBySession, setMessagesBySession] = useState<Record<string, Message[]>>({})
-
-  useEffect(() => {
-    if (currentSessionId === null) return
-    if (currentSessionId in messagesBySession) return
-
-    fetchMessages(currentMessages).then((msgs) => {
-      setMessagesBySession((prev) => ({ ...prev, [currentSessionId]: msgs }))
-    })
-  }, [currentSessionId])
-
-  //if currentSessionId is set (not null), then return messagesBySession[currentSessionId] (falling back to [] if that key is missing); else return [].
-  const currentMessages = currentSessionId ? (messagesBySession[currentSessionId] ?? []) : []
+  const { messages, append: appendMessage } = useMessages(currentSessionId)
 
   function handleSelectProject(id: string) {
      setCurrentProjectId(id)   // switch project
      setCurrentSessionId(null) // nothing selected in the new project yet
   }
 
-  function appendMessage(sessionId: string, message: Message) {
-    setMessagesBySession((prev) => ({
-      ...prev,
-      [sessionId]: [...(prev[sessionId] ?? []), message],
-    }))
-  }
-  
   async function handleNewSession() {
     if (currentProjectId === null ) return
     const session = await createSession(currentModelId)
@@ -95,7 +76,7 @@ function App() {
           onSelectModel={setCurrentModelId}
          />
 	 <Mainchat
-          messages={currentMessages}
+          messages={messages}
          />
   	 <Footer onSend={handleSend} disabled={isStreaming} />
       </main>
