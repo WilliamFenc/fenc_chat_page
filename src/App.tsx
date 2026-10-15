@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
-import type { Project, Session, Model, Message} from './types'
+import type { Message } from './types'
 import { newId } from './utils/id'
+import { fetchMessages } from './api/messages'
+import { useProjects } from './hooks/useProjects'
+import { useModels } from './hooks/useModels'
+import { useSessions } from './hooks/useSessions'
 import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 import { Mainchat } from './components/Mainchat'
 import { Footer } from './components/Footer'
-import { fetchProjects, fetchModels, fetchSessions, fetchMessages, createSession } from './api'
-
 
 function App() {
 
@@ -15,30 +17,18 @@ function App() {
   const [currentModelId, setCurrentModelId] = useState<string>('m1')
   const [isStreaming, setIsStreaming] = useState(false)
 
-  const [projects, setProjects] = useState<Project[]>([])
-  const [models, setModels] = useState<Model[]>([])
-  const [sessions, setSessions] = useState<Session[]>([])
+  const { projects } = useProjects()
+  const { models } = useModels()
+  const { sessions, create: createSession } = useSessions(currentProjectId)
+
   const [messagesBySession, setMessagesBySession] = useState<Record<string, Message[]>>({})
 
   useEffect(() => {
-    fetchProjects().then(setProjects)
-    fetchModels().then(setModels)
-  }, [])
+    if (currentSessionId === null) return
+    if (currentSessionId in messagesBySession) return
 
-  useEffect(() => {
-    if (currentProjectId === null) {
-      setSessions([])
-      return
-    }
-    fetchSessions(currentProjectId).then(setSessions)
-  }, [currentProjectId])
-
-  useEffect(() => {
-  if (currentSessionId === null) return
-  if (currentSessionId in messagesBySession) return
-  
-  fetchMessages(currentSessionId).then((msgs) => {
-    setMessagesBySession((prev) => ({ ...prev, [currentSessionId]: msgs }))
+    fetchMessages(currentMessages).then((msgs) => {
+      setMessagesBySession((prev) => ({ ...prev, [currentSessionId]: msgs }))
     })
   }, [currentSessionId])
 
@@ -59,8 +49,7 @@ function App() {
   
   async function handleNewSession() {
     if (currentProjectId === null ) return
-    const session = await createSession(currentProjectId, currentModelId)
-    setSessions((prev) => [...prev, session])
+    const session = await createSession(currentModelId)
     setCurrentSessionId(session.id)
   }
 
