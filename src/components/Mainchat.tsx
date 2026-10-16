@@ -14,9 +14,16 @@ export function Mainchat({ messages }: MainchatProps) {
       {messages.map((m) => (
         <div
           key={m.id}
-          className={`mb-3 text-lg ${m.role === 'user' ? 'text-right' : 'text-left'}`}
+          //className={`mb-3 text-lg ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          className={`mb-3 flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
         >
-          {m.content}
+          <div
+            className={`max-w-[70%] px-4 py-2 rounded-2xl ${
+	    m.role === 'user' ? 'bg-accent-soft px-5 py-3 rounded-3xl' : 'py-3'
+            }`}
+          >
+            {m.content}
+          </div>
         </div>
       ))}
     </div>

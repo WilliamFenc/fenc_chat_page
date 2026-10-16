@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { Session } from '../types'
-import { fetchSessions, createSession } from '../api/sessions'
+import { fetchSessions, createSession, renameSession } from '../api/sessions'
 
 export function useSessions(projectId: string | null) {
   const [sessions, setSessions] = useState<Session[]>([])
@@ -20,5 +20,10 @@ export function useSessions(projectId: string | null) {
     return session
   }
 
-  return { sessions, create }
+  async function rename(modelId: string, title: string) {
+    const updated = await renameSession(sessionId, title)
+    setSessions((prev) => prev.map((s) => (s.id === updated.id ? updated : s)))
+  }
+
+  return { sessions, create , rename}
 }
