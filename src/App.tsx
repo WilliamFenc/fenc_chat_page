@@ -5,6 +5,7 @@ import { fetchMessages } from './api/messages'
 import { useProjects } from './hooks/useProjects'
 import { useModels } from './hooks/useModels'
 import { useSessions } from './hooks/useSessions'
+import { useMessages } from './hooks/useMessages'
 import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 import { Mainchat } from './components/Mainchat'
@@ -19,34 +20,14 @@ function App() {
 
   const { projects } = useProjects()
   const { models } = useModels()
-  const { sessions, create: createSession } = useSessions(currentProjectId)
-
-  const [messagesBySession, setMessagesBySession] = useState<Record<string, Message[]>>({})
-
-  useEffect(() => {
-    if (currentSessionId === null) return
-    if (currentSessionId in messagesBySession) return
-
-    fetchMessages(currentMessages).then((msgs) => {
-      setMessagesBySession((prev) => ({ ...prev, [currentSessionId]: msgs }))
-    })
-  }, [currentSessionId])
-
-  //if currentSessionId is set (not null), then return messagesBySession[currentSessionId] (falling back to [] if that key is missing); else return [].
-  const currentMessages = currentSessionId ? (messagesBySession[currentSessionId] ?? []) : []
+  const { sessions, create: createSession, rename: renameSession } = useSessions(currentProjectId)
+  const { messages, append: appendMessage } = useMessages(currentSessionId)
 
   function handleSelectProject(id: string) {
      setCurrentProjectId(id)   // switch project
      setCurrentSessionId(null) // nothing selected in the new project yet
   }
 
-  function appendMessage(sessionId: string, message: Message) {
-    setMessagesBySession((prev) => ({
-      ...prev,
-      [sessionId]: [...(prev[sessionId] ?? []), message],
-    }))
-  }
-  
   async function handleNewSession() {
     if (currentProjectId === null ) return
     const session = await createSession(currentModelId)
@@ -78,7 +59,7 @@ function App() {
 
 
   return (
-    <div className="h-screen flex bg-gray-900 text-white">
+    <div className="h-screen flex bg-page text-ink">
 	<Sidebar 
 	 projects={projects}
 	 sessions={sessions}
@@ -87,6 +68,7 @@ function App() {
 	 onSelectProject={handleSelectProject}
          onSelectSession={setCurrentSessionId}
          onNewSession={handleNewSession}
+         onRenameSession={renameSession}
 	/>
 	<main className="flex-1 flex flex-col">
 	 <Header 
@@ -95,7 +77,7 @@ function App() {
           onSelectModel={setCurrentModelId}
          />
 	 <Mainchat
-          messages={currentMessages}
+          messages={messages}
          />
   	 <Footer onSend={handleSend} disabled={isStreaming} />
       </main>
