@@ -20,7 +20,7 @@ function App() {
 
   const { projects } = useProjects()
   const { models } = useModels()
-  const { sessions, create: createSession } = useSessions(currentProjectId)
+  const { sessions, create: createSession, rename: renameSession } = useSessions(currentProjectId)
   const { messages, append: appendMessage } = useMessages(currentSessionId)
 
   function handleSelectProject(id: string) {
@@ -68,6 +68,7 @@ function App() {
 	 onSelectProject={handleSelectProject}
          onSelectSession={setCurrentSessionId}
          onNewSession={handleNewSession}
+         onRenameSession={renameSession}
 	/>
 	<main className="flex-1 flex flex-col">
 	 <Header 

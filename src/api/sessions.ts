@@ -7,6 +7,15 @@ export async function fetchSessions(projectId: string): Promise<Session[]> {
   return mockSessions.filter((s) => s.projectId === projectId)
 }
 
+export async function renameSession(projectId: string, title: string): Promise<Session[]> {
+  await delay(300)
+  const session = mockSession.find((s) => s.id === sessionId)
+  if (!session) throw new Error(`Session ${sessionId} not found`)
+  session.title = title
+  session.updatedAt = new Date().toISOString()
+  return session
+}
+
 export async function createSession(projectId: string, modelId: string): Promise<Session> {
   await delay(300)
   const now = new Date().toISOString()
