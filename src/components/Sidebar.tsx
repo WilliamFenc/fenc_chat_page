@@ -38,17 +38,17 @@ export function Sidebar({
 
   return (
     <aside className="w-64 bg-panel border-r border-line p-3">
-      {projects.map((p) => (
-        <div
-          key={p.id}
-          onClick={() => onSelectProject(p.id)}
-          className={`cursor-pointer px-2 py-1 rounded ${
-            p.id === currentProjectId ? 'bg-accent-soft font-medium' : 'hover:bg-page'
-          }`}
-        >
-          {p.name}
-        </div>
-      ))}
+       <select
+         value={currentProjectId ?? ''}
+         onChange={(e) => onSelectProject(e.target.value)}
+         className="w-full mb-3 px-2 py-1 rounded bg-surface border border-line text-ink"
+       >
+        {projects.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </select>
 
       <hr className="my-3 border-line" />
 
