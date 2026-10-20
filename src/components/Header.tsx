@@ -15,9 +15,9 @@ export function Header({
 return (
     <header className="h-12 border-b border-line px-4 flex items-center">
       <select
-        value={currentModelId}
+        value={currentModelId ?? ''}
         onChange={(e) => onSelectModel(e.target.value)}
-        className="bg-surface border border-line rounded px-2 py-1"
+        className="bg-surface border border-line text-ink rounded px-2 py-1"
       >
         {models.map((m) => (
           <option key={m.id} value={m.id}>
@@ -26,8 +26,7 @@ return (
         ))}
       </select>
     </header>
-)
-
+  )
 }
 
 
