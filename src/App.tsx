@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react'
-import type { Message } from './types'
 import { newId } from './utils/id'
-import { fetchMessages } from './api/messages'
+
 import { useProjects } from './hooks/useProjects'
 import { useModels } from './hooks/useModels'
 import { useSessions } from './hooks/useSessions'
 import { useMessages } from './hooks/useMessages'
+
 import { Sidebar } from './components/Sidebar'
 import { Header } from './components/Header'
 import { Mainchat } from './components/Mainchat'
 import { Footer } from './components/Footer'
 
 function App() {
-
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null)
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null)
-  const [currentModelId, setCurrentModelId] = useState<string>('m1')
+  const [currentModelId, setCurrentModelId] = useState<string | null>(null)
   const [isStreaming, setIsStreaming] = useState(false)
 
   const { projects } = useProjects()
@@ -23,13 +22,27 @@ function App() {
   const { sessions, create: createSession, rename: renameSession } = useSessions(currentProjectId)
   const { messages, append: appendMessage } = useMessages(currentSessionId)
 
+  useEffect(() => {
+    if (currentProjectId === null && projects.length > 0) {
+      setCurrentProjectId(projects[0].id)
+    }
+   
+  }, [projects, currentProjectId])
+
+  useEffect(() => {
+    if (currentModelId === null && models.length > 0) {
+      setCurrentModelId(models[0].id)
+    }
+  }, [models, currentModelId])
+
+
   function handleSelectProject(id: string) {
      setCurrentProjectId(id)   // switch project
      setCurrentSessionId(null) // nothing selected in the new project yet
   }
 
   async function handleNewSession() {
-    if (currentProjectId === null ) return
+    if (currentProjectId === null || currentModelId === null ) return
     const session = await createSession(currentModelId)
     setCurrentSessionId(session.id)
   }
