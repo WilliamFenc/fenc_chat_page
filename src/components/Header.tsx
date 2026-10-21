@@ -2,7 +2,7 @@ import type { Model } from '../types'
 
 interface HeaderProps{
   models:Model[]
-  currentModelId: string
+  currentModelId: string | null
   onSelectModel: (id:string) => void
 }
 

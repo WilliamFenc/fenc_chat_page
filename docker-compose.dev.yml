@@ -1,0 +1,17 @@
+services:
+  web:
+    image: chat-ui_dev:v1.0.0
+    ports:
+      - "8090:80"
+    networks:
+      - gateway_net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+
+networks:
+  gateway_net:
+    external: true
