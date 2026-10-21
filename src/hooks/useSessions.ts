@@ -20,7 +20,7 @@ export function useSessions(projectId: string | null) {
     return session
   }
 
-  async function rename(modelId: string, title: string) {
+  async function rename(sessionId: string, title: string) {
     const updated = await renameSession(sessionId, title)
     setSessions((prev) => prev.map((s) => (s.id === updated.id ? updated : s)))
   }
