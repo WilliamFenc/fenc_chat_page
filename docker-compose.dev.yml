@@ -1,6 +1,6 @@
 services:
   web:
-    image: chat-ui_dev:v1
+    image: chat-ui_dev:v1.0.0
     ports:
       - "8090:80"
     networks:
